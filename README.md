@@ -6,6 +6,11 @@
 
 A meta nginx exporter that combines two different exporters
 
+> **Development Status** *nginx-exporter* is currently **NOT WORKING AS
+> EXPECTED**, because it is not possible to specify multiple ports
+> ([prometheus/prometheus#3756](https://github.com/prometheus/prometheus/issues/3756))
+> for a single Pod. Anyway, using it outside Kubernetes should still work.
+
 ## References
 
 * The mtail programm is based on
@@ -113,7 +118,7 @@ spec:
         app: my-nginx
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "3093;9113"
+        prometheus.io/port: "3093;9113" # this doesn't work
 
     spec:
       containers:
