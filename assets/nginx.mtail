@@ -51,6 +51,14 @@ counter nginx_response_size_bytes_sum by vhost, method, code, content_type
     nginx_request_duration_milliseconds_sum["2100"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
   }
 
+  $request_seconds * 1000 + $request_milliseconds < 3400 {
+    nginx_request_duration_milliseconds_sum["3400"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
+  }
+
+  $request_seconds * 1000 + $request_milliseconds < 5500 {
+    nginx_request_duration_milliseconds_sum["5500"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
+  }
+
   nginx_request_duration_milliseconds_sum["+Inf"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
 
 }
