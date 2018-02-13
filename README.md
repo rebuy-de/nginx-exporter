@@ -88,10 +88,11 @@ This exporter is configured via environment variables:
 
 ### Prometheus
 
-The exporter provides two metric endpoints:
+The exporter provides three metric endpoints:
 
 - `3093` -- mtail exporter
 - `9113` -- status page exporter
+- `9397` -- merged mertrics from mtai and status page exporter
 
 ### Kubernetes
 
@@ -118,7 +119,7 @@ spec:
         app: my-nginx
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "3093;9113" # this doesn't work
+        prometheus.io/port: "9397"
 
     spec:
       containers:
@@ -133,8 +134,7 @@ spec:
         image: quay.io/rebuy/nginx-exporter:v1.0.0
 
         ports:
-        - containerPort: 3093
-        - containerPort: 9113
+        - containerPort: 9397
 
         env:
         - name: NGINX_ACCESS_LOGS
