@@ -1,0 +1,3 @@
+exporters:
+- url: http://localhost:3093/metrics
+- url: http://localhost:9113/metrics

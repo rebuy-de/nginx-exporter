@@ -1,15 +1,13 @@
 # nginx-exporter
 
-[![Build Status](https://travis-ci.org/rebuy-de/nginx-exporter.svg?branch=master)](https://travis-ci.org/rebuy-de/nginx-exporter)
+[![Docker Repository](https://quay.io/repository/rebuy/nginx-exporter/status "Docker Repository")](https://quay.io/repository/rebuy/nginx-exporter)
 [![license](https://img.shields.io/github/license/rebuy-de/nginx-exporter.svg)]()
 [![GitHub release](https://img.shields.io/github/release/rebuy-de/nginx-exporter.svg)]()
 
 A meta nginx exporter that combines two different exporters
 
-> **Development Status** *nginx-exporter* is currently **NOT WORKING AS
-> EXPECTED**, because it is not possible to specify multiple ports
-> ([prometheus/prometheus#3756](https://github.com/prometheus/prometheus/issues/3756))
-> for a single Pod. Anyway, using it outside Kubernetes should still work.
+> **Development Status** *nginx-exporter* is in an early development phase.
+> Expect breaking changes any time.
 
 ## References
 
@@ -17,6 +15,8 @@ A meta nginx exporter that combines two different exporters
   [ndiazg/nginx-prometheus-exporter](https://github.com/ndiazg/nginx-prometheus-exporter).
 * The status page exporter is from
   [discordianfish/nginx_exporter](https://github.com/discordianfish/nginx_exporter).
+* The exporter merger is from
+  [rebuy-de/exporter-merger](https://github.com/rebuy-de/exporter-merger).
 
 
 ## Available Metrics
@@ -30,7 +30,7 @@ All metrics provide these labels: `vhost`, `method`, `code`, `content_type`.
 * `nginx_response_size_bytes_sum` – Sum of all response body sizes.
 
 The `le` label can be used to generate a histogram. The buckets currently have a
-fixed size (`100ms`, `200ms`, `300ms`, `500ms`, `800ms`, `1300ms`, `2100ms`).
+fixed size (`100ms`, `200ms`, `300ms`, `500ms`, `800ms`, `1300ms`, `2100ms`, `5400ms`, `7500ms`).
 
 ### From status page
 
@@ -88,10 +88,11 @@ This exporter is configured via environment variables:
 
 ### Prometheus
 
-The exporter provides two metric endpoints:
+The exporter provides three metric endpoints:
 
 - `3093` -- mtail exporter
 - `9113` -- status page exporter
+- `9397` -- merged mertrics from mtai and status page exporter
 
 ### Kubernetes
 
@@ -118,7 +119,7 @@ spec:
         app: my-nginx
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "3093;9113" # this doesn't work
+        prometheus.io/port: "9397"
 
     spec:
       containers:
@@ -133,8 +134,7 @@ spec:
         image: quay.io/rebuy/nginx-exporter:v1.0.0
 
         ports:
-        - containerPort: 3093
-        - containerPort: 9113
+        - containerPort: 9397
 
         env:
         - name: NGINX_ACCESS_LOGS
