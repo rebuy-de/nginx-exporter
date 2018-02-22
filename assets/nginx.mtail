@@ -1,13 +1,13 @@
-counter nginx_requests_total by vhost, method, code, content_type
-counter nginx_request_duration_milliseconds_sum by le, vhost, method, code, content_type
-counter nginx_response_size_bytes_sum by vhost, method, code, content_type
+counter nginx_requests_total by vhost, method, code
+counter nginx_request_duration_milliseconds_sum by le, vhost, method, code
+counter nginx_response_size_bytes_sum by vhost, method, code
 
 # log_format mtail '$server_name $remote_addr - $remote_user [$time_local] '
 #                  '"$request" $status $bytes_sent $request_time'
 #                  '"$http_referer" "$http_user_agent" "$content_type"';
 
 /^/ +
-/(?P<vhost>[0-9A-Za-z\.\-:]+) / +
+/(?P<vhost>[0-9A-Za-z\.\-:]*[a-zA-Z][0-9A-Za-z\.\-:]*) / +
 /(?P<remote_addr>[0-9A-Za-z\.\-:]+) / +
 /- / +
 /(?P<remote_user>[0-9A-Za-z\-]+) / +
@@ -20,45 +20,45 @@ counter nginx_response_size_bytes_sum by vhost, method, code, content_type
 /"(?P<http_user_agent>[[:print:]]+)" / +
 /"(?P<content_type>[^;\\]+)(;.*)?"/ +
 /$/ {
-  nginx_requests_total[$vhost][tolower($request_method)][$status][$content_type]++
-  nginx_response_size_bytes_sum[$vhost][tolower($request_method)][$status][$content_type] += $bytes_sent
+  nginx_requests_total[$vhost][tolower($request_method)][$status]++
+  nginx_response_size_bytes_sum[$vhost][tolower($request_method)][$status] += $bytes_sent
 
   $request_seconds * 1000 + $request_milliseconds < 100 {
-    nginx_request_duration_milliseconds_sum["100"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
+    nginx_request_duration_milliseconds_sum["100"][$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds
   }
 
   $request_seconds * 1000 + $request_milliseconds < 200 {
-    nginx_request_duration_milliseconds_sum["200"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
+    nginx_request_duration_milliseconds_sum["200"][$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds
   }
 
   $request_seconds * 1000 + $request_milliseconds < 300 {
-    nginx_request_duration_milliseconds_sum["300"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
+    nginx_request_duration_milliseconds_sum["300"][$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds
   }
 
   $request_seconds * 1000 + $request_milliseconds < 500 {
-    nginx_request_duration_milliseconds_sum["500"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
+    nginx_request_duration_milliseconds_sum["500"][$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds
   }
 
   $request_seconds * 1000 + $request_milliseconds < 800 {
-    nginx_request_duration_milliseconds_sum["800"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
+    nginx_request_duration_milliseconds_sum["800"][$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds
   }
 
   $request_seconds * 1000 + $request_milliseconds < 1300 {
-    nginx_request_duration_milliseconds_sum["1300"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
+    nginx_request_duration_milliseconds_sum["1300"][$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds
   }
 
   $request_seconds * 1000 + $request_milliseconds < 2100 {
-    nginx_request_duration_milliseconds_sum["2100"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
+    nginx_request_duration_milliseconds_sum["2100"][$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds
   }
 
   $request_seconds * 1000 + $request_milliseconds < 3400 {
-    nginx_request_duration_milliseconds_sum["3400"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
+    nginx_request_duration_milliseconds_sum["3400"][$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds
   }
 
   $request_seconds * 1000 + $request_milliseconds < 5500 {
-    nginx_request_duration_milliseconds_sum["5500"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
+    nginx_request_duration_milliseconds_sum["5500"][$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds
   }
 
-  nginx_request_duration_milliseconds_sum["+Inf"][$vhost][tolower($request_method)][$status][$content_type] += $request_seconds * 1000 + $request_milliseconds
+  nginx_request_duration_milliseconds_sum["+Inf"][$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds
 
 }
