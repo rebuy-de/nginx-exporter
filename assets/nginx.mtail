@@ -7,7 +7,7 @@ counter nginx_response_size_bytes_sum by vhost, method, code
 #                  '"$http_referer" "$http_user_agent" "$content_type"';
 
 /^/ +
-/(?P<vhost>[0-9A-Za-z\.\-:]+) / +
+/(?P<vhost>[0-9A-Za-z\.\-:]*[a-zA-Z][0-9A-Za-z\.\-:]*) / +
 /(?P<remote_addr>[0-9A-Za-z\.\-:]+) / +
 /- / +
 /(?P<remote_user>[0-9A-Za-z\-]+) / +
