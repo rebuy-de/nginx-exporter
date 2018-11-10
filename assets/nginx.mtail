@@ -1,10 +1,10 @@
-counter nginx_requests_total by vhost, method, code
+counter nginx_requests_total by vhost, method, code, cache_status
 counter nginx_request_duration_milliseconds_sum by le, vhost, method, code
-counter nginx_response_size_bytes_sum by vhost, method, code
+counter nginx_response_size_bytes_sum by vhost, method, code, cache_status
 
 # log_format mtail '$server_name $remote_addr - $remote_user [$time_local] '
 #                  '"$request" $status $bytes_sent $request_time'
-#                  '"$http_referer" "$http_user_agent" "$content_type"';
+#                  '"$http_referer" "$http_user_agent" "$content_type" "$upstream_cache_status"';
 
 /^/ +
 /(?P<vhost>[0-9A-Za-z\.\-:]*[a-zA-Z][0-9A-Za-z\.\-:]*) / +
@@ -18,10 +18,11 @@ counter nginx_response_size_bytes_sum by vhost, method, code
 /(?P<request_seconds>\d+)\.(?P<request_milliseconds>\d+) / +
 /"(?P<http_referer>\S+)" / +
 /"(?P<http_user_agent>[[:print:]]+)" / +
-/"(?P<content_type>[^;\\]+)(;.*)?"/ +
+/"(?P<content_type>[^;\\]+)(;.*)?" / +
+/"(?P<upstream_cache_status>(MISS|HIT|EXPIRED))?"/ +
 /$/ {
-  nginx_requests_total[$vhost][tolower($request_method)][$status]++
-  nginx_response_size_bytes_sum[$vhost][tolower($request_method)][$status] += $bytes_sent
+  nginx_requests_total[$vhost][tolower($request_method)][$status][tolower($upstream_cache_status)]++
+  nginx_response_size_bytes_sum[$vhost][tolower($request_method)][$status][tolower($upstream_cache_status)] += $bytes_sent
 
   $request_seconds * 1000 + $request_milliseconds < 100 {
     nginx_request_duration_milliseconds_sum["100"][$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds

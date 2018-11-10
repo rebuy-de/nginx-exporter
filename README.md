@@ -92,7 +92,7 @@ The exporter provides three metric endpoints:
 
 - `3093` -- mtail exporter
 - `9113` -- status page exporter
-- `9397` -- merged mertrics from mtai and status page exporter
+- `9397` -- merged mertrics from mtail and status page exporter
 
 ### Kubernetes
 
