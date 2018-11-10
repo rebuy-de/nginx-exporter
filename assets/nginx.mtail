@@ -19,7 +19,7 @@ counter nginx_response_size_bytes_sum by vhost, method, code, cache_status
 /"(?P<http_referer>\S+)" / +
 /"(?P<http_user_agent>[[:print:]]+)" / +
 /"(?P<content_type>[^;\\]+)(;.*)?" / +
-/"(?P<upstream_cache_status>(MISS|HIT|EXPIRED))?"/ +
+/"(?P<upstream_cache_status>([[:print:]]))?"/ +
 /$/ {
   nginx_requests_total[$vhost][tolower($request_method)][$status][tolower($upstream_cache_status)]++
   nginx_response_size_bytes_sum[$vhost][tolower($request_method)][$status][tolower($upstream_cache_status)] += $bytes_sent
