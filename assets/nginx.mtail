@@ -29,8 +29,8 @@ counter nginx_request_duration_milliseconds_count by vhost, method, code
 
   nginx_response_size_bytes_sum[$vhost][tolower($request_method)][$status][tolower($upstream_cache_status)] += $bytes_sent
 
-  nginx_request_duration_milliseconds_count[$vhost][tolower($request_method)][$status][tolower($upstream_cache_status)]++
-  nginx_request_duration_milliseconds_sum[$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds < 100
+  nginx_request_duration_milliseconds_count[$vhost][tolower($request_method)][$status]++
+  nginx_request_duration_milliseconds_sum[$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds
 
   $request_seconds * 1000 + $request_milliseconds < 100 {
     nginx_request_duration_milliseconds_bucket["100"][$vhost][tolower($request_method)][$status]++
@@ -87,7 +87,4 @@ counter nginx_request_duration_milliseconds_count by vhost, method, code
   }
 
   nginx_request_duration_milliseconds_bucket["+Inf"][$vhost][tolower($request_method)][$status]++
-
-  nginx_request_duration_milliseconds_sum["+Inf"][$vhost][tolower($request_method)][$status] += $request_seconds * 1000 + $request_milliseconds
-
 }
