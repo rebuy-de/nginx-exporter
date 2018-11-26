@@ -26,11 +26,11 @@ A meta nginx exporter that combines two different exporters
 All metrics provide these labels: `vhost`, `method`, `code`, `content_type`.
 
 * `nginx_requests_total` – Counter of processed requests.
-* `nginx_request_duration_milliseconds_sum` – Sum of all response times (additional label: `le`).
+* `nginx_request_duration_milliseconds` – Histogram of all response times.
 * `nginx_response_size_bytes_sum` – Sum of all response body sizes.
 
-The `le` label can be used to generate a histogram. The buckets currently have a
-fixed size (`100ms`, `200ms`, `300ms`, `500ms`, `800ms`, `1300ms`, `2100ms`, `5400ms`, `7500ms`).
+The `nginx_request_duration_milliseconds` histogram currently defines these buckets: 
+`100ms`, `200ms`, `300ms`, `500ms`, `800ms`, `1300ms`, `2100ms`, `3400ms`, `5500ms`, `+Inf`
 
 ### From status page
 
@@ -52,10 +52,10 @@ section:
 ```nginx
 log_format mtail '$host $remote_addr - $remote_user [$time_local] '
                  '"$request" $status $body_bytes_sent $request_time '
-                 '"$http_referer" "$http_user_agent" "$content_type"';
+                 '"$http_referer" "$http_user_agent" "$content_type" "$upstream_cache_status"';
 ```
 
-The access logs needs to be enabled in each `server` secion:
+The access logs needs to be enabled in each `server` section:
 
 ```nginx
 access_log /var/log/nginx/mtail/access.log mtail;
@@ -63,7 +63,7 @@ access_log /var/log/nginx/mtail/access.log mtail;
 
 #### Status Page
 
-The status page is disabled by default. We suggest to listen on a separate port, so the path doesn't clash with any existing resource:
+The status page is disabled by default. We suggest to listen on a separate port, so the path does not clash with any existing resource:
 
 ```nginx
 server {
@@ -76,6 +76,8 @@ server {
     }
 }
 ```
+
+You can also keep the port private and do deny external traffic to the port.
 
 ### Exporter
 
