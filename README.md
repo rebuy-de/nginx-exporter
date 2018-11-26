@@ -12,7 +12,7 @@ A meta nginx exporter that combines two different exporters
 ## References
 
 * The mtail programm is based on
-  [ndiazg/nginx-prometheus-exporter](https://github.com/ndiazg/nginx-prometheus-exporter).
+  [google/mtail](https://github.com/google/mtail).
 * The status page exporter is from
   [discordianfish/nginx_exporter](https://github.com/discordianfish/nginx_exporter).
 * The exporter merger is from
@@ -92,7 +92,7 @@ The exporter provides three metric endpoints:
 
 - `3093` -- mtail exporter
 - `9113` -- status page exporter
-- `9397` -- merged mertrics from mtail and status page exporter
+- `9397` -- merged metrics from mtail and status page exporter
 
 ### Kubernetes
 
