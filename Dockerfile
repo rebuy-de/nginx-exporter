@@ -13,7 +13,7 @@ RUN mkdir -p  /go/src/github.com/google/ && \
 
 RUN ls -la /go/bin
 
-FROM fish/nginx-exporter:v0.1.0 as status
+FROM fish/nginx-exporter:v0.1.1 as status
 
 FROM alpine:3.8
 

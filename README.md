@@ -133,7 +133,7 @@ spec:
           mountPath: /var/log/nginx/mtail
 
       - name: exporter
-        image: quay.io/rebuy/nginx-exporter:v1.0.0
+        image: quay.io/rebuy/nginx-exporter:v1.1.0
 
         ports:
         - containerPort: 9397
