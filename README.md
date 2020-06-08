@@ -1,6 +1,9 @@
+# Deprecation notice
+
+This project is no longer maintained, but feel free to fork
+
 # nginx-exporter
 
-[![Docker Repository](https://quay.io/repository/rebuy/nginx-exporter/status "Docker Repository")](https://quay.io/repository/rebuy/nginx-exporter)
 [![license](https://img.shields.io/github/license/rebuy-de/nginx-exporter.svg)]()
 [![GitHub release](https://img.shields.io/github/release/rebuy-de/nginx-exporter.svg)]()
 
